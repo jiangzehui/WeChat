@@ -53,6 +53,7 @@ public class WeChatServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
+		System.out.println("收到微信验证请求");
 		// 微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
 		String signature = request.getParameter("signature");
 		// 时间戳
