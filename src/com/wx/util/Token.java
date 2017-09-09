@@ -66,19 +66,29 @@ public class Token {
 		ob1.put("type", "click");
 		ob1.put("name", "我的信息");
 		ob1.put("key", "msg");
+		
 		JSONObject ob2 = new JSONObject();
 		ob2.put("name", "更多");
 		JSONArray array2 = new JSONArray();
+		
 		JSONObject ob21 = new JSONObject();
 		ob21.put("type", "scancode_waitmsg");
 		ob21.put("name", "扫一扫");
 		ob21.put("key", "scan");
 		array2.add(ob21);
+		
 		JSONObject ob22 = new JSONObject();
 		ob22.put("type", "location_select");
-		ob22.put("name", "天气查询");
-		ob22.put("key", "weather");
+		ob22.put("name", "发送位置");
+		ob22.put("key", "location");
 		array2.add(ob22);
+		
+		JSONObject ob23 = new JSONObject();
+		ob23.put("type", "pic_photo_or_album");
+		ob23.put("name", "发送图片");
+		ob23.put("key", "pic");
+		array2.add(ob23);
+		
 		ob2.put("sub_button", array2);
 		array.add(ob1);
 		array.add(ob2);
