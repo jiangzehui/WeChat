@@ -116,29 +116,32 @@ public class WeChatServlet extends HttpServlet {
 										+ fromUserName + "&lang=zh_CN");
 						JSONObject object = JSONObject.fromObject(userMsg);
 						String nickname = object.getString("nickname");
-						String sex = object.getString("sex").equals("1")?"男":"女";
+						String sex = object.getString("sex").equals("1") ? "男"
+								: "女";
 						String city = object.getString("city");
 						String province = object.getString("province");
 						String country = object.getString("country");
 						String headimgurl = object.getString("headimgurl");
 
 						ImgAndTxtMsg msg = new ImgAndTxtMsg(toUserName,
-								fromUserName, nickname, "性别："+sex+"\n城市："+province+city, headimgurl, "http://www.baidu.com");
+								fromUserName, nickname, "性别：" + sex + "\n城市："
+										+ province + city, headimgurl,
+								"http://www.baidu.com");
 						result = (msg.getXml());
-						
+
 					}
 
 				} else if (event.equals("location_select")) {// 点击菜单跳转上报地理位置事件
-				// String Location_X = map.get("Location_X");// 纬度
-				// String Location_Y = map.get("Location_Y"); // 经度
-				// String Label = map.get("Label"); // 位置信息
-				// String Poiname = map.get("Poiname"); // poi点
-				// TextMsg tmMsg = new TextMsg();
-				// tmMsg.setFromUserName(fromUserName);
-				// tmMsg.setToUserName(toUserName);
-				// tmMsg.setContent("纬度："+
-				// Location_X+"\n经度："+Location_Y+"\n位置信息："+Label+"\n"+Poiname);
-				// result = (tmMsg.getXml());
+					// String Location_X = map.get("Location_X");// 纬度
+					// String Location_Y = map.get("Location_Y"); // 经度
+					// String Label = map.get("Label"); // 位置信息
+					// String Poiname = map.get("Poiname"); // poi点
+					// TextMsg tmMsg = new TextMsg();
+					// tmMsg.setFromUserName(fromUserName);
+					// tmMsg.setToUserName(toUserName);
+					// tmMsg.setContent("纬度："+
+					// Location_X+"\n经度："+Location_Y+"\n位置信息："+Label+"\n"+Poiname);
+					// result = (tmMsg.getXml());
 
 				} else if (event.equals("VIEW")) {// 点击菜单跳转链接时的事件
 
@@ -158,10 +161,20 @@ public class WeChatServlet extends HttpServlet {
 						.get("http://apicloud.mob.com/v1/weather/query?key=appkey&city="
 								+ URLEncoder.encode(content, "utf-8")
 								+ "&province=");
+				JSONObject object = JSONObject.fromObject(userMsg)
+						.getJSONArray("result").getJSONObject(0);
+				String contentString = "时间："+object.optString("date")+" "+object.optString("time") + "\n城市："
+						+ object.optString("city") + "\n当前气温："
+						+ object.optString("temperature") + " "
+						+ object.optString("weather") + " "
+						+ object.optString("wind") + "\n穿衣指数："
+						+ object.optString("dressingIndex") + "\n"
+						+ object.optString("humidity") + "\n空气质量指数："
+						+ object.optString("airCondition");
 				TextMsg tmMsg = new TextMsg();
 				tmMsg.setFromUserName(fromUserName);
 				tmMsg.setToUserName(toUserName);
-				tmMsg.setContent(userMsg);
+				tmMsg.setContent(contentString);
 				result = (tmMsg.getXml());
 			} else if (msgType.equals("location")) {
 
@@ -175,13 +188,13 @@ public class WeChatServlet extends HttpServlet {
 				tmMsg.setContent("纬度：" + Location_X + "\n经度：" + Location_Y
 						+ "\n位置信息：" + Label);
 				result = (tmMsg.getXml());
-			}else if (msgType.equals("image")) {
+			} else if (msgType.equals("image")) {
 
 				System.out.println(fromUserName + "给后台发送了图片");
-				//String PicUrl = map.get("PicUrl");// 图片地址
+				// String PicUrl = map.get("PicUrl");// 图片地址
 				String mediaId = map.get("MediaId");// 媒体消息id
-				//String MsgId = map.get("MsgId");// 消息id
-				ImgMsg msg = new ImgMsg( toUserName,  fromUserName,  mediaId);
+				// String MsgId = map.get("MsgId");// 消息id
+				ImgMsg msg = new ImgMsg(toUserName, fromUserName, mediaId);
 				result = (msg.getXml());
 			}
 
@@ -189,7 +202,7 @@ public class WeChatServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 System.out.println(result);
+		System.out.println(result);
 		out.print(result);
 		out.flush();
 		out.close();
