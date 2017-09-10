@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 
 import com.wx.entity.ImgAndTxtMsg;
+import com.wx.entity.ImgMsg;
 import com.wx.entity.TextMsg;
 import com.wx.util.Api;
 import com.wx.util.Token;
@@ -174,6 +175,14 @@ public class WeChatServlet extends HttpServlet {
 				tmMsg.setContent("纬度：" + Location_X + "\n经度：" + Location_Y
 						+ "\n位置信息：" + Label);
 				result = (tmMsg.getXml());
+			}else if (msgType.equals("image")) {
+
+				System.out.println(fromUserName + "给后台发送了图片");
+				//String PicUrl = map.get("PicUrl");// 图片地址
+				String mediaId = map.get("MediaId");// 媒体消息id
+				//String MsgId = map.get("MsgId");// 消息id
+				ImgMsg msg = new ImgMsg( toUserName,  fromUserName,  mediaId);
+				result = (msg.getXml());
 			}
 
 		} catch (Exception e) {

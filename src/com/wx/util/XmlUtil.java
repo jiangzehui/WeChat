@@ -12,11 +12,12 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 public class XmlUtil {
-
+	public static Map<String, String> map = new HashMap<String, String>();
+	
 	public static Map<String, String> parseXml(HttpServletRequest request)
 			throws Exception {
 		// 将解析结果存储在HashMap中
-		Map<String, String> map = new HashMap<String, String>();
+		map = new HashMap<String, String>();
 
 		// 从request中取得输入流
 		InputStream inputStream = request.getInputStream();
@@ -29,24 +30,29 @@ public class XmlUtil {
 		List<Element> elementList = root.elements();
 
 		// 遍历所有子节点
-		for (Element e : elementList) {
-
-			if (e.elements().size() > 0) {//判断是否还存在子标签
-				List<Element> chindList = e.elements();
-				for (int i = 0; i < chindList.size(); i++) {
-					Element e1 = chindList.get(i);
-					map.put(e1.getName(), e1.getText());
-				}
-			} else {
-				map.put(e.getName(), e.getText());
-			}
-		}
+		formatXml(elementList);
 
 		// 释放资源
 		inputStream.close();
 		inputStream = null;
 
 		return map;
+	}
+	
+	/**
+	 * 递归遍历所有子节点
+	 * @param elementList
+	 */
+	private static void formatXml(List<Element> elementList){
+		for (Element e : elementList) {
+
+			if (e.elements().size() > 0) {//判断是否还存在子标签
+				List<Element> chindList = e.elements();
+				formatXml(chindList);
+			} else {
+				map.put(e.getName(), e.getText());
+			}
+		}
 	}
 
 }
